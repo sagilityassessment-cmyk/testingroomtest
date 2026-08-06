@@ -13,28 +13,9 @@ const interviewGrid = document.getElementById("interviewGrid");
 
 async function loadSeats() {
 
-    const snapshot = await get(
-        ref(db, `locations/${SITE}/seats`)
-    );
+    const snapshot = await get(ref(db, `locations/${SITE}/seats`));
 
-    let seats = {};
-
-    if (snapshot.exists()) {
-        seats = snapshot.val();
-    }
-
-    g.innerHTML = "";
-
-    for (let i = 1; i <= 20; i++) {
-
-        let v = seats[i] || 0;
-
-        g.innerHTML += `
-        <div class="card">
-            <h3>Seat ${i}</h3>
-
-            <input
-                id="seat${i}"
+    const seats = snapshot               id="seat${i}"
                 value="${v}"
                 onchange="saveSeat(${i}, this.value)"
             >
@@ -80,41 +61,29 @@ function renderInterviewRooms() {
     }
 }
 
-window.saveSeat = async function(seat, value){
+window.saveSeat = async function (seat, value) {
 
     await set(
-        ref(
-            db,
-            `locations/${SITE}/seats/${seat}`
-        ),
+        ref(db, `locations/${SITE}/seats/${seat}`),
         value || 0
     );
-
 };
 
-window.callSeat = async function(seat){
+window.callSeat = async function (seat) {
 
     const seatSnapshot = await get(
-        ref(
-            db,
-            `locations/${SITE}/seats/${seat}`
-        )
+        ref(db, `locations/${SITE}/seats/${seat}`)
     );
 
-    let id = 0;
-
-    if (seatSnapshot.exists()) {
-        id = seatSnapshot.val();
-    }
+    const id = seatSnapshot.exists()
+        ? seatSnapshot.val()
+        : 0;
 
     await push(
-        ref(
-            db,
-            `locations/${SITE}/queue`
-        ),
+        ref(db, `locations/${SITE}/queue`),
         {
-            seat: seat,
-            id: id,
+            seat,
+            id,
             timestamp: Date.now()
         }
     );
@@ -124,31 +93,25 @@ window.callSeat = async function(seat){
     ).innerHTML = "CALLED ✓";
 };
 
-window.callInterview = async function(room){
+window.callInterview = async function (room) {
 
     const input =
         document.getElementById(
             `interviewName${room}`
         );
 
-    const value =
-        input.value.trim();
+    const value = input.value.trim();
 
     if (!value) {
-        alert(
-            "Enter Applicant ID or Name"
-        );
+        alert("Enter Applicant ID or Name");
         return;
     }
 
     await push(
-        ref(
-            db,
-            `locations/${SITE}/interviewQueue`
-        ),
+        ref(db, `locations/${SITE}/interviewQueue`),
         {
-            room: room,
-            value: value,
+            room,
+            value,
             timestamp: Date.now()
         }
     );
@@ -160,7 +123,7 @@ window.callInterview = async function(room){
     input.value = "";
 };
 
-window.clearAllSeats = async function(){
+window.clearAllSeats = async function () {
 
     const confirmClear = confirm(
         "Are you sure you want to clear all seat data?"
@@ -177,7 +140,6 @@ window.clearAllSeats = async function(){
             ),
             0
         );
-
     }
 
     alert("All seats have been reset to 0.");
