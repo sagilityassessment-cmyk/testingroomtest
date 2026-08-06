@@ -80,7 +80,7 @@ function renderInterviewRooms() {
     }
 }
 
-window.saveSeat = async function (seat, value) {
+window.saveSeat = async function(seat, value){
 
     await set(
         ref(
@@ -89,9 +89,10 @@ window.saveSeat = async function (seat, value) {
         ),
         value || 0
     );
+
 };
 
-window.callSeat = async function (seat) {
+window.callSeat = async function(seat){
 
     const seatSnapshot = await get(
         ref(
@@ -118,27 +119,24 @@ window.callSeat = async function (seat) {
         }
     );
 
-    const btn =
-        document.getElementById(
-            "b" + seat
-        );
-
-    btn.className = "called";
-    btn.innerHTML = "CALLED ✓";
+    document.getElementById(
+        "b" + seat
+    ).innerHTML = "CALLED ✓";
 };
 
-window.callInterview = async function (room) {
+window.callInterview = async function(room){
 
     const input =
         document.getElementById(
             `interviewName${room}`
         );
 
-    const value = input.value.trim();
+    const value =
+        input.value.trim();
 
     if (!value) {
         alert(
-            "Please enter Applicant ID or Name."
+            "Enter Applicant ID or Name"
         );
         return;
     }
@@ -155,31 +153,20 @@ window.callInterview = async function (room) {
         }
     );
 
-    const btn =
-        document.getElementById(
-            `ib${room}`
-        );
-
-    btn.className = "called";
-    btn.innerHTML = "CALLED ✓";
-
-    setTimeout(() => {
-        btn.className = "";
-        btn.innerHTML = "CALL INTERVIEW";
-    }, 3000);
+    document.getElementById(
+        `ib${room}`
+    ).innerHTML = "CALLED ✓";
 
     input.value = "";
 };
 
-window.clearAllSeats = async function () {
+window.clearAllSeats = async function(){
 
     const confirmClear = confirm(
         "Are you sure you want to clear all seat data?"
     );
 
-    if (!confirmClear) {
-        return;
-    }
+    if (!confirmClear) return;
 
     for (let i = 1; i <= 20; i++) {
 
@@ -190,11 +177,10 @@ window.clearAllSeats = async function () {
             ),
             0
         );
+
     }
 
-    alert(
-        "All seats have been reset to 0."
-    );
+    alert("All seats have been reset to 0.");
 
     loadSeats();
 };
