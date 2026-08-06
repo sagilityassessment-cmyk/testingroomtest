@@ -49,10 +49,10 @@ async function loadSeats() {
         `;
     }
 
-    loadInterviewRooms();
+    renderInterviewRooms();
 }
 
-function loadInterviewRooms() {
+function renderInterviewRooms() {
 
     if (!interviewGrid) return;
 
@@ -80,24 +80,23 @@ function loadInterviewRooms() {
     }
 }
 
-window.saveSeat = async function(seat, value){
+window.saveSeat = async function (seat, value) {
 
     await set(
         ref(
             db,
-            \`locations/\${SITE}/seats/\${seat}\`
+            `locations/${SITE}/seats/${seat}`
         ),
         value || 0
     );
-
 };
 
-window.callSeat = async function(seat){
+window.callSeat = async function (seat) {
 
     const seatSnapshot = await get(
         ref(
             db,
-            \`locations/\${SITE}/seats/\${seat}\`
+            `locations/${SITE}/seats/${seat}`
         )
     );
 
@@ -110,7 +109,7 @@ window.callSeat = async function(seat){
     await push(
         ref(
             db,
-            \`locations/\${SITE}/queue\`
+            `locations/${SITE}/queue`
         ),
         {
             seat: seat,
@@ -119,28 +118,28 @@ window.callSeat = async function(seat){
         }
     );
 
-    const btn = document.getElementById(
-        "b" + seat
-    );
+    const btn =
+        document.getElementById(
+            "b" + seat
+        );
 
     btn.className = "called";
     btn.innerHTML = "CALLED ✓";
 };
 
-window.callInterview = async function(room){
+window.callInterview = async function (room) {
 
-    const input = document.getElementById(
-        `interviewName${room}`
-    );
+    const input =
+        document.getElementById(
+            `interviewName${room}`
+        );
 
     const value = input.value.trim();
 
     if (!value) {
-
         alert(
             "Please enter Applicant ID or Name."
         );
-
         return;
     }
 
@@ -156,12 +155,18 @@ window.callInterview = async function(room){
         }
     );
 
-    const btn = document.getElementById(
-        `ib${room}`
-    );
+    const btn =
+        document.getElementById(
+            `ib${room}`
+        );
 
     btn.className = "called";
     btn.innerHTML = "CALLED ✓";
+
+    setTimeout(() => {
+        btn.className = "";
+        btn.innerHTML = "CALL INTERVIEW";
+    }, 3000);
 
     input.value = "";
 };
@@ -185,7 +190,6 @@ window.clearAllSeats = async function () {
             ),
             0
         );
-
     }
 
     alert(
