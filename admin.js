@@ -1,4 +1,4 @@
-const SITE = "bohol";
+const SITE = "test";
 
 import { db } from "./firebase.js";
 import {
