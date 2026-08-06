@@ -11,6 +11,7 @@ import {
 const g = document.getElementById("grid");
 const interviewGrid =
     document.getElementById("interviewGrid");
+
 async function loadSeats() {
 
     const snapshot = await get(
@@ -48,7 +49,83 @@ async function loadSeats() {
         </div>
         `;
     }
+
+    loadInterviewRooms();
 }
+
+/* INTERVIEW ROOMS */
+function loadInterviewRooms() {
+
+    interviewGrid.innerHTML = "";
+
+    for (let i = 1; i <= 5; i++) {
+
+        interviewGrid.innerHTML += `
+        <div class="card">
+
+            <h3>Interview Room ${i}</h3>
+
+            <input
+                type="text"
+                id="interviewName${i}"
+                placeholder="Applicant ID or Name"
+            >
+
+            <button
+                id="ib${i}"
+                onclick="callInterview(${i})"
+            >
+                CALL INTERVIEW
+            </button>
+
+        </div>
+        `;
+    }
+}
+
+window.callInterview = async function(room){
+
+    const value =
+        document.getElementById(
+            `interviewName${room}`
+        ).value.trim();
+
+    if (!value) {
+
+        alert(
+            "Please enter Applicant ID or Name."
+        );
+
+        return;
+    }
+
+    await push(
+        ref(
+            db,
+            `locations/${SITE}/interviewQueue`
+        ),
+        {
+            room: room,
+            value: value,
+            timestamp: Date.now()
+        }
+    );
+
+    const btn =
+        document.getElementById(
+            `ib${room}`
+        );
+
+    btn.className = "called";
+    btn.innerHTML = "CALLED ✓";
+
+    setTimeout(() => {
+
+        btn.className = "";
+        btn.innerHTML = "CALL INTERVIEW";
+
+    }, 3000);
+};
 
 window.saveSeat = async function(seat, value){
 
@@ -79,48 +156,4 @@ window.callSeat = async function(seat){
 
     await push(
         ref(
-            db,
-            `locations/${SITE}/queue`
-        ),
-        {
-            seat: seat,
-            id: id,
-            timestamp: Date.now()
-        }
-    );
-
-    const btn = document.getElementById(
-        "b" + seat
-    );
-
-    btn.className = "called";
-    btn.innerHTML = "CALLED ✓";
-};
-
-window.clearAllSeats = async function () {
-
-    const confirmClear = confirm(
-        "Are you sure you want to clear all seat data?"
-    );
-
-    if (!confirmClear) {
-        return;
-    }
-
-    for (let i = 1; i <= 20; i++) {
-
-        await set(
-            ref(
-                db,
-                `locations/${SITE}/seats/${i}`
-            ),
-            0
-        );
-
-    }
-
-    alert("All seats have been reset to 0.");
-
-    loadSeats();
-};
-loadSeats();
+     
