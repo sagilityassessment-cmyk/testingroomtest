@@ -14,6 +14,7 @@ const chime = new Audio("./chime.mp3");
 
 let selectedVoice = null;
 let queue = [];
+let interviewQueue = [];
 let processing = false;
 let chimePlayed = false;
 
@@ -55,7 +56,8 @@ function draw(seats = []) {
 
             let seat = r + (c * 5);
 
-            let color = (c % 2 === 0)
+            let color =
+                (c % 2 === 0)
                 ? "pink"
                 : "green";
 
@@ -83,21 +85,50 @@ onValue(
     ref(db, `locations/${SITE}/seats`),
     snapshot => {
 
-        const seats = snapshot.val() || [];
+        const seats =
+            snapshot.val() || [];
+
         draw(seats);
 
     }
 );
 
-/* QUEUE */
+/* TESTING QUEUE */
 onValue(
     ref(db, `locations/${SITE}/queue`),
     snapshot => {
 
-        const data = snapshot.val() || {};
-        queue = Object.entries(data);
+        const data =
+            snapshot.val() || {};
 
-        if (queue.length === 0) {
+        queue =
+            Object.entries(data);
+
+        if (
+            queue.length === 0 &&
+            interviewQueue.length === 0
+        ) {
+            chimePlayed = false;
+        }
+
+    }
+);
+
+/* INTERVIEW QUEUE */
+onValue(
+    ref(db, `locations/${SITE}/interviewQueue`),
+    snapshot => {
+
+        const data =
+            snapshot.val() || {};
+
+        interviewQueue =
+            Object.entries(data);
+
+        if (
+            queue.length === 0 &&
+            interviewQueue.length === 0
+        ) {
             chimePlayed = false;
         }
 
@@ -107,49 +138,96 @@ onValue(
 setInterval(async () => {
 
     if (processing) return;
-    if (queue.length === 0) return;
+
+    if (
+        queue.length === 0 &&
+        interviewQueue.length === 0
+    ) return;
 
     processing = true;
 
-    const [key, item] = queue[0];
+    let key;
+    let item;
+    let isInterview = false;
 
-    popup.classList.remove("hidden");
+    if (queue.length > 0) {
 
-    popup.innerHTML = `
-        <div class="seat-call">
-            SEAT ${item.seat} - ID ${item.id}
-        </div>
-
-        <div class="instruction">
-            PLEASE PROCEED TO TESTING ROOM
-        </div>
-    `;
-
-    let announceText = "";
-
-    if (isNaN(item.id)) {
-
-        announceText =
-            `Seat number ${item.seat}. Applicant ${item.id}. Please proceed to Testing Room.`;
+        [key, item] =
+            queue[0];
 
     } else {
 
-        announceText =
-            `Seat number ${item.seat}. ID number ${item.id}. Please proceed to Testing Room.`;
+        [key, item] =
+            interviewQueue[0];
 
+        isInterview = true;
+    }
+
+    popup.classList.remove("hidden");
+
+    let announceText = "";
+
+    if (isInterview) {
+
+        popup.innerHTML = `
+            <div class="seat-call">
+                ${item.value}
+            </div>
+
+            <div class="instruction">
+                PLEASE PROCEED TO INTERVIEW ROOM ${item.room}
+            </div>
+        `;
+
+        if (isNaN(item.value)) {
+
+            announceText =
+                `Applicant name ${item.value}. Please proceed to Interview Room ${item.room}.`;
+
+        } else {
+
+            announceText =
+                `Applicant ID ${item.value}. Please proceed to Interview Room ${item.room}.`;
+
+        }
+
+    } else {
+
+        popup.innerHTML = `
+            <div class="seat-call">
+                SEAT ${item.seat} - ID ${item.id}
+            </div>
+
+            <div class="instruction">
+                PLEASE PROCEED TO TESTING ROOM
+            </div>
+        `;
+
+        if (isNaN(item.id)) {
+
+            announceText =
+                `Seat number ${item.seat}. Applicant ${item.id}. Please proceed to Testing Room.`;
+
+        } else {
+
+            announceText =
+                `Seat number ${item.seat}. ID number ${item.id}. Please proceed to Testing Room.`;
+
+        }
     }
 
     const speak = () => {
 
         speechSynthesis.cancel();
 
-        const speech = new SpeechSynthesisUtterance(
-            announceText
-        );
+        const speech =
+            new SpeechSynthesisUtterance(
+                announceText
+            );
 
         speech.voice = selectedVoice;
         speech.rate = 0.9;
-        speech.pitch = 1.0;
+        speech.pitch = 1;
         speech.volume = 1;
 
         speechSynthesis.speak(speech);
@@ -173,14 +251,16 @@ setInterval(async () => {
         } else {
 
             speak();
-
         }
 
     } catch (err) {
 
-        console.log("Chime failed:", err);
-        speak();
+        console.log(
+            "Chime failed:",
+            err
+        );
 
+        speak();
     }
 
     setTimeout(async () => {
@@ -190,13 +270,17 @@ setInterval(async () => {
         try {
 
             await remove(
-                ref(db, `locations/${SITE}/queue/${key}`)
+                ref(
+                    db,
+                    isInterview
+                        ? `locations/${SITE}/interviewQueue/${key}`
+                        : `locations/${SITE}/queue/${key}`
+                )
             );
 
         } catch (err) {
 
             console.log(err);
-
         }
 
         processing = false;
