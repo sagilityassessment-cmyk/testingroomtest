@@ -9,7 +9,8 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
 
 const g = document.getElementById("grid");
-
+const interviewGrid =
+    document.getElementById("interviewGrid");
 async function loadSeats() {
 
     const snapshot = await get(
