@@ -36,142 +36,46 @@ function loadFemaleVoice() {
 loadFemaleVoice();
 speechSynthesis.onvoiceschanged = loadFemaleVoice;
 
-/* DISPLAY BOARD */
 function draw(seats = []) {
 
-    let latestSeat = "-";
-    let latestId = "-";
-
-    for (let i = 20; i >= 1; i--) {
-
-        if (seats[i] && seats[i] != 0) {
-
-            latestSeat = i;
-            latestId = seats[i];
-            break;
-        }
-    }
-
     let html = `
-
-    <div style="
-        width:95%;
-        margin:20px auto;
-        background:#21105e;
-        color:white;
-        font-size:70px;
-        font-weight:900;
-        text-align:center;
-        border-radius:10px;
-        padding:10px;
-    ">
-        TESTING ROOM
-    </div>
-
-    <div style="
-        width:850px;
-        height:250px;
-        margin:25px auto;
-        background:white;
-        border:5px solid #21105e;
-        border-radius:15px;
-
-        display:flex;
-        flex-direction:column;
-        justify-content:center;
-        align-items:center;
-    ">
-        <div style="
-            font-size:90px;
-            font-weight:900;
-            color:#21105e;
-        ">
-            SEAT ${latestSeat}
-        </div>
-
-        <div style="
-            font-size:65px;
-            color:#21105e;
-        ">
-            ${latestId}
-        </div>
-    </div>
-
-    <div style="
-        width:95%;
-        margin:auto;
-
-        display:grid;
-        grid-template-columns:repeat(4,1fr);
-        gap:20px;
-    ">
+    <table>
+        <tr>
+            <th>SEAT</th><th>ID NO.</th>
+            <th>SEAT</th><th>ID NO.</th>
+            <th>SEAT</th><th>ID NO.</th>
+            <th>SEAT</th><th>ID NO.</th>
+        </tr>
     `;
 
-    for (let i = 1; i <= 20; i++) {
+    for (let r = 1; r <= 5; r++) {
 
-        html += `
-        <div style="
-            background:white;
-            border:3px solid #21105e;
-            border-radius:12px;
-            padding:20px;
-            text-align:center;
-        ">
-            <div style="
-                font-size:34px;
-                font-weight:900;
-                color:#21105e;
-            ">
-                SEAT ${i}
-            </div>
+        html += "<tr>";
 
-            <div style="
-                font-size:28px;
-                margin-top:10px;
-                color:#21105e;
-            ">
-                ${seats[i] || 0}
-            </div>
-        </div>
-        `;
+        for (let c = 0; c < 4; c++) {
+
+            let seat = r + (c * 5);
+
+            let color =
+                (c % 2 === 0)
+                ? "pink"
+                : "green";
+
+            html += `
+                <td class="${color}">
+                    SEAT ${seat}
+                </td>
+
+                <td class="${color}">
+                    ${seats[seat] || 0}
+                </td>
+            `;
+        }
+
+        html += "</tr>";
     }
 
-    html += `
-    </div>
-
-    <div style="
-        width:95%;
-        margin:40px auto 20px auto;
-        background:#21105e;
-        color:white;
-        font-size:70px;
-        font-weight:900;
-        text-align:center;
-        border-radius:10px;
-        padding:10px;
-    ">
-        INTERVIEW ROOM
-    </div>
-
-    <div style="
-        width:850px;
-        height:250px;
-        margin:25px auto;
-        background:white;
-        border:5px solid #21105e;
-        border-radius:15px;
-
-        display:flex;
-        justify-content:center;
-        align-items:center;
-
-        font-size:70px;
-        font-weight:900;
-        color:#21105e;
-    ">
-        WAITING FOR INTERVIEW CALL
-    </div>
-    `;
+    html += "</table>";
 
     board.innerHTML = html;
 }
@@ -248,11 +152,14 @@ setInterval(async () => {
 
     if (queue.length > 0) {
 
-        [key, item] = queue[0];
+        [key, item] =
+            queue[0];
 
     } else {
 
-        [key, item] = interviewQueue[0];
+        [key, item] =
+            interviewQueue[0];
+
         isInterview = true;
     }
 
@@ -281,6 +188,7 @@ setInterval(async () => {
 
             announceText =
                 `Applicant ID ${item.value}. Please proceed to Interview Room ${item.room}.`;
+
         }
 
     } else {
@@ -304,6 +212,7 @@ setInterval(async () => {
 
             announceText =
                 `Seat number ${item.seat}. ID number ${item.id}. Please proceed to Testing Room.`;
+
         }
     }
 
@@ -346,7 +255,10 @@ setInterval(async () => {
 
     } catch (err) {
 
-        console.log("Chime failed:", err);
+        console.log(
+            "Chime failed:",
+            err
+        );
 
         speak();
     }
