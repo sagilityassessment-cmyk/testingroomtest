@@ -38,44 +38,105 @@ speechSynthesis.onvoiceschanged = loadFemaleVoice;
 
 function draw(seats = []) {
 
-    let html = `
-    <table>
-        <tr>
-            <th>SEAT</th><th>ID NO.</th>
-            <th>SEAT</th><th>ID NO.</th>
-            <th>SEAT</th><th>ID NO.</th>
-            <th>SEAT</th><th>ID NO.</th>
-        </tr>
-    `;
+    let latestSeat = "";
+    let latestId = "";
 
-    for (let r = 1; r <= 5; r++) {
+    for (let i = 20; i >= 1; i--) {
 
-        html += "<tr>";
+        if (seats[i] && seats[i] != 0) {
 
-        for (let c = 0; c < 4; c++) {
-
-            let seat = r + (c * 5);
-
-            let color =
-                (c % 2 === 0)
-                ? "pink"
-                : "green";
-
-            html += `
-                <td class="${color}">
-                    SEAT ${seat}
-                </td>
-
-                <td class="${color}">
-                    ${seats[seat] || 0}
-                </td>
-            `;
+            latestSeat = i;
+            latestId = seats[i];
+            break;
         }
-
-        html += "</tr>";
     }
 
-    html += "</table>";
+    let html = `
+
+    <div style="
+        width:95%;
+        margin:20px auto;
+        background:#21105e;
+        color:white;
+        font-size:70px;
+        font-weight:900;
+        text-align:center;
+        border-radius:10px;
+        padding:10px;
+    ">
+        TESTING ROOM
+    </div>
+
+    <div style="
+        width:700px;
+        height:250px;
+        margin:20px auto;
+        background:white;
+        border:5px solid #21105e;
+        border-radius:15px;
+
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+    ">
+        <div style="
+            font-size:90px;
+            font-weight:900;
+            color:#21105e;
+        ">
+            SEAT ${latestSeat || "-"}
+        </div>
+
+        <div style="
+            font-size:70px;
+            color:#21105e;
+        ">
+            ${latestId || "-"}
+        </div>
+    </div>
+
+    <div style="
+        display:grid;
+        grid-template-columns:repeat(4,1fr);
+        gap:20px;
+        width:95%;
+        margin:auto;
+    ">
+    `;
+
+    for (let i = 1; i <= 20; i++) {
+
+        html += `
+        <div style="
+            background:white;
+            border:3px solid #21105e;
+            border-radius:12px;
+            padding:20px;
+            text-align:center;
+        ">
+            <div style="
+                font-size:40px;
+                font-weight:900;
+                color:#21105e;
+            ">
+                SEAT ${i}
+            </div>
+
+            <div style="
+                font-size:32px;
+                margin-top:10px;
+                color:#21105e;
+            ">
+                ${seats[i] || 0}
+            </div>
+        </div>
+        `;
+    }
+
+    html += `
+    </div>
+    `;
 
     board.innerHTML = html;
 }
