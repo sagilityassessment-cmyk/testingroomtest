@@ -36,10 +36,11 @@ function loadFemaleVoice() {
 loadFemaleVoice();
 speechSynthesis.onvoiceschanged = loadFemaleVoice;
 
+/* DISPLAY BOARD */
 function draw(seats = []) {
 
-    let latestSeat = "";
-    let latestId = "";
+    let latestSeat = "-";
+    let latestId = "-";
 
     for (let i = 20; i >= 1; i--) {
 
@@ -68,9 +69,9 @@ function draw(seats = []) {
     </div>
 
     <div style="
-        width:700px;
+        width:850px;
         height:250px;
-        margin:20px auto;
+        margin:25px auto;
         background:white;
         border:5px solid #21105e;
         border-radius:15px;
@@ -85,23 +86,24 @@ function draw(seats = []) {
             font-weight:900;
             color:#21105e;
         ">
-            SEAT ${latestSeat || "-"}
+            SEAT ${latestSeat}
         </div>
 
         <div style="
-            font-size:70px;
+            font-size:65px;
             color:#21105e;
         ">
-            ${latestId || "-"}
+            ${latestId}
         </div>
     </div>
 
     <div style="
+        width:95%;
+        margin:auto;
+
         display:grid;
         grid-template-columns:repeat(4,1fr);
         gap:20px;
-        width:95%;
-        margin:auto;
     ">
     `;
 
@@ -116,7 +118,7 @@ function draw(seats = []) {
             text-align:center;
         ">
             <div style="
-                font-size:40px;
+                font-size:34px;
                 font-weight:900;
                 color:#21105e;
             ">
@@ -124,7 +126,7 @@ function draw(seats = []) {
             </div>
 
             <div style="
-                font-size:32px;
+                font-size:28px;
                 margin-top:10px;
                 color:#21105e;
             ">
@@ -135,6 +137,39 @@ function draw(seats = []) {
     }
 
     html += `
+    </div>
+
+    <div style="
+        width:95%;
+        margin:40px auto 20px auto;
+        background:#21105e;
+        color:white;
+        font-size:70px;
+        font-weight:900;
+        text-align:center;
+        border-radius:10px;
+        padding:10px;
+    ">
+        INTERVIEW ROOM
+    </div>
+
+    <div style="
+        width:850px;
+        height:250px;
+        margin:25px auto;
+        background:white;
+        border:5px solid #21105e;
+        border-radius:15px;
+
+        display:flex;
+        justify-content:center;
+        align-items:center;
+
+        font-size:70px;
+        font-weight:900;
+        color:#21105e;
+    ">
+        WAITING FOR INTERVIEW CALL
     </div>
     `;
 
@@ -213,14 +248,11 @@ setInterval(async () => {
 
     if (queue.length > 0) {
 
-        [key, item] =
-            queue[0];
+        [key, item] = queue[0];
 
     } else {
 
-        [key, item] =
-            interviewQueue[0];
-
+        [key, item] = interviewQueue[0];
         isInterview = true;
     }
 
@@ -249,7 +281,6 @@ setInterval(async () => {
 
             announceText =
                 `Applicant ID ${item.value}. Please proceed to Interview Room ${item.room}.`;
-
         }
 
     } else {
@@ -273,7 +304,6 @@ setInterval(async () => {
 
             announceText =
                 `Seat number ${item.seat}. ID number ${item.id}. Please proceed to Testing Room.`;
-
         }
     }
 
@@ -316,10 +346,7 @@ setInterval(async () => {
 
     } catch (err) {
 
-        console.log(
-            "Chime failed:",
-            err
-        );
+        console.log("Chime failed:", err);
 
         speak();
     }
