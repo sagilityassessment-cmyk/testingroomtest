@@ -7,8 +7,19 @@ import {
     remove
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
 
-const board = document.getElementById("board");
 const popup = document.getElementById("popup");
+
+const testingLatest =
+    document.getElementById("testingLatest");
+
+const testingHistory =
+    document.getElementById("testingHistory");
+
+const interviewLatest =
+    document.getElementById("interviewLatest");
+
+const interviewHistory =
+    document.getElementById("interviewHistory");
 
 const chime = new Audio("./chime.mp3");
 
@@ -17,6 +28,9 @@ let queue = [];
 let interviewQueue = [];
 let processing = false;
 let chimePlayed = false;
+
+let testingCalls = [];
+let interviewCallsHistory = [];
 
 /* FEMALE VOICE */
 function loadFemaleVoice() {
@@ -29,69 +43,97 @@ function loadFemaleVoice() {
         voices.find(v => /zira/i.test(v.name)) ||
         voices.find(v => /samantha/i.test(v.name)) ||
         voices[0];
-
-    console.log("Using voice:", selectedVoice?.name);
 }
 
 loadFemaleVoice();
 speechSynthesis.onvoiceschanged = loadFemaleVoice;
 
-function draw(seats = []) {
+/* DRAW DASHBOARD */
+function draw() {
 
-    let html = `
-    <table>
-        <tr>
-            <th>SEAT</th><th>ID NO.</th>
-            <th>SEAT</th><th>ID NO.</th>
-            <th>SEAT</th><th>ID NO.</th>
-            <th>SEAT</th><th>ID NO.</th>
-        </tr>
-    `;
+    if (testingCalls.length > 0) {
 
-    for (let r = 1; r <= 5; r++) {
+        const latest = testingCalls[0];
 
-        html += "<tr>";
+        testingLatest.innerHTML = `
+            <div class="latest-title">
+                SEAT ${latest.seat}
+            </div>
 
-        for (let c = 0; c < 4; c++) {
+            <div class="latest-id">
+                ID ${latest.id}
+            </div>
+        `;
 
-            let seat = r + (c * 5);
+    } else {
 
-            let color =
-                (c % 2 === 0)
-                ? "pink"
-                : "green";
-
-            html += `
-                <td class="${color}">
-                    SEAT ${seat}
-                </td>
-
-                <td class="${color}">
-                    ${seats[seat] || 0}
-                </td>
-            `;
-        }
-
-        html += "</tr>";
+        testingLatest.innerHTML = "";
     }
 
-    html += "</table>";
+    testingHistory.innerHTML = "";
 
-    board.innerHTML = html;
+    testingCalls
+        .slice(1, 9)
+        .forEach(item => {
+
+            testingHistory.innerHTML += `
+                <div class="history-box">
+
+                    <div class="history-seat">
+                        SEAT ${item.seat}
+                    </div>
+
+                    <div class="history-id">
+                        ${item.id}
+                    </div>
+
+                </div>
+            `;
+        });
+
+    if (interviewCallsHistory.length > 0) {
+
+        const latest =
+            interviewCallsHistory[0];
+
+        interviewLatest.innerHTML = `
+            <div class="latest-title">
+                ${latest.value}
+            </div>
+
+            <div class="latest-id">
+                ROOM ${latest.room}
+            </div>
+        `;
+
+    } else {
+
+        interviewLatest.innerHTML = "";
+    }
+
+    interviewHistory.innerHTML = "";
+
+    interviewCallsHistory
+        .slice(1, 5)
+        .forEach(item => {
+
+            interviewHistory.innerHTML += `
+                <div class="history-box">
+
+                    <div class="history-seat">
+                        ${item.value}
+                    </div>
+
+                    <div class="history-id">
+                        ROOM ${item.room}
+                    </div>
+
+                </div>
+            `;
+        });
 }
 
-/* SEATS */
-onValue(
-    ref(db, `locations/${SITE}/seats`),
-    snapshot => {
-
-        const seats =
-            snapshot.val() || [];
-
-        draw(seats);
-
-    }
-);
+draw();
 
 /* TESTING QUEUE */
 onValue(
@@ -101,15 +143,7 @@ onValue(
         const data =
             snapshot.val() || {};
 
-        queue =
-            Object.entries(data);
-
-        if (
-            queue.length === 0 &&
-            interviewQueue.length === 0
-        ) {
-            chimePlayed = false;
-        }
+        queue = Object.entries(data);
 
     }
 );
@@ -124,13 +158,6 @@ onValue(
 
         interviewQueue =
             Object.entries(data);
-
-        if (
-            queue.length === 0 &&
-            interviewQueue.length === 0
-        ) {
-            chimePlayed = false;
-        }
 
     }
 );
@@ -152,8 +179,7 @@ setInterval(async () => {
 
     if (queue.length > 0) {
 
-        [key, item] =
-            queue[0];
+        [key, item] = queue[0];
 
     } else {
 
@@ -168,6 +194,16 @@ setInterval(async () => {
     let announceText = "";
 
     if (isInterview) {
+
+        interviewCallsHistory.unshift({
+            room: item.room,
+            value: item.value
+        });
+
+        interviewCallsHistory =
+            interviewCallsHistory.slice(0, 5);
+
+        draw();
 
         popup.innerHTML = `
             <div class="seat-call">
@@ -188,103 +224,20 @@ setInterval(async () => {
 
             announceText =
                 `Applicant ID ${item.value}. Please proceed to Interview Room ${item.room}.`;
-
         }
 
     } else {
 
+        testingCalls.unshift({
+            seat: item.seat,
+            id: item.id
+        });
+
+        testingCalls =
+            testingCalls.slice(0, 9);
+
+        draw();
+
         popup.innerHTML = `
             <div class="seat-call">
-                SEAT ${item.seat} - ID ${item.id}
-            </div>
-
-            <div class="instruction">
-                PLEASE PROCEED TO TESTING ROOM
-            </div>
-        `;
-
-        if (isNaN(item.id)) {
-
-            announceText =
-                `Seat number ${item.seat}. Applicant ${item.id}. Please proceed to Testing Room.`;
-
-        } else {
-
-            announceText =
-                `Seat number ${item.seat}. ID number ${item.id}. Please proceed to Testing Room.`;
-
-        }
-    }
-
-    const speak = () => {
-
-        speechSynthesis.cancel();
-
-        const speech =
-            new SpeechSynthesisUtterance(
-                announceText
-            );
-
-        speech.voice = selectedVoice;
-        speech.rate = 0.9;
-        speech.pitch = 1;
-        speech.volume = 1;
-
-        speechSynthesis.speak(speech);
-    };
-
-    try {
-
-        if (!chimePlayed) {
-
-            chimePlayed = true;
-
-            chime.pause();
-            chime.currentTime = 0;
-
-            await chime.play();
-
-            setTimeout(() => {
-                speak();
-            }, 2000);
-
-        } else {
-
-            speak();
-        }
-
-    } catch (err) {
-
-        console.log(
-            "Chime failed:",
-            err
-        );
-
-        speak();
-    }
-
-    setTimeout(async () => {
-
-        popup.classList.add("hidden");
-
-        try {
-
-            await remove(
-                ref(
-                    db,
-                    isInterview
-                        ? `locations/${SITE}/interviewQueue/${key}`
-                        : `locations/${SITE}/queue/${key}`
-                )
-            );
-
-        } catch (err) {
-
-            console.log(err);
-        }
-
-        processing = false;
-
-    }, 10000);
-
-}, 2000);
+                SEAT ${item.seat} - ID ${item
