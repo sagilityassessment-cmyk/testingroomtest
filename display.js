@@ -113,13 +113,64 @@ function drawInterviewRooms() {
             <th>ROOM 5</th>
         </tr>
 
-        <tr>
-            <td class="pink">${interviewRooms[1] || ""}</td>
-            <td class="green">${interviewRooms[2] || ""}</td>
-            <td class="pink">${interviewRooms[3] || ""}</td>
-            <td class="green">${interviewRooms[4] || ""}</td>
-            <td class="pink">${interviewRooms[5] || ""}</td>
-        </tr>
+       <tr>
+
+    <td class="pink">
+        <span class="${
+            interviewRooms[1] &&
+            isNaN(interviewRooms[1])
+                ? "name-value"
+                : "id-value"
+        }">
+            ${interviewRooms[1] || ""}
+        </span>
+    </td>
+
+    <td class="green">
+        <span class="${
+            interviewRooms[2] &&
+            isNaN(interviewRooms[2])
+                ? "name-value"
+                : "id-value"
+        }">
+            ${interviewRooms[2] || ""}
+        </span>
+    </td>
+
+    <td class="pink">
+        <span class="${
+            interviewRooms[3] &&
+            isNaN(interviewRooms[3])
+                ? "name-value"
+                : "id-value"
+        }">
+            ${interviewRooms[3] || ""}
+        </span>
+    </td>
+
+    <td class="green">
+        <span class="${
+            interviewRooms[4] &&
+            isNaN(interviewRooms[4])
+                ? "name-value"
+                : "id-value"
+        }">
+            ${interviewRooms[4] || ""}
+        </span>
+    </td>
+
+    <td class="pink">
+        <span class="${
+            interviewRooms[5] &&
+            isNaN(interviewRooms[5])
+                ? "name-value"
+                : "id-value"
+        }">
+            ${interviewRooms[5] || ""}
+        </span>
+    </td>
+
+</tr>
     </table>
     `;
 
