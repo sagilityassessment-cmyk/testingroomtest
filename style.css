@@ -19,10 +19,10 @@ body{
     background:#ececec;
     color:#21105e;
 }
-
+/* testing room  header */
 header{
     background:#21105e;
-    height:100px;
+    height:120px;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -48,9 +48,6 @@ header{
     font-size:70px;
 }
 
-.display-page .title{
-    font-size:80px;
-}
 
 /* GRID */
 
@@ -144,7 +141,7 @@ header{
 .section-title{
     background:#21105e;
 
-    height:110px;
+    height:120px;
 
     display:flex;
     justify-content:center;
