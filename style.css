@@ -20,8 +20,6 @@ body{
     color:#21105e;
 }
 
-/* HEADER */
-
 header{
     background:#21105e;
     height:100px;
@@ -29,7 +27,15 @@ header{
     justify-content:center;
     align-items:center;
 }
-
+/* testing room HEADER */
+.display-page .title{
+    font-size:105px !important;
+    font-weight:900;
+    color:#ffffff;
+    letter-spacing:2px;
+    line-height:1;
+    text-align:center;
+}
 .title{
     font-weight:900;
     color:#ffffff;
@@ -112,15 +118,15 @@ header{
     height:60px;
     border:1px solid #21105e;
 }
-/* TABLE */
+/* TABLE testing */
 .board td{
     color:#21105e;
     border:1px solid #21105e;
     text-align:center;
     vertical-align:middle;
-    font-size:50px;
+    font-size:70px;
     font-weight:900;
-    height:200px;
+    height:190px;
     padding:0;
     overflow:hidden;
 }
@@ -138,7 +144,7 @@ header{
 .section-title{
     background:#21105e;
 
-    height:100px;
+    height:110px;
 
     display:flex;
     justify-content:center;
@@ -146,7 +152,7 @@ header{
 
     color:#ffffff;
 
-    font-size:80px;
+    font-size:105px;
     font-weight:900;
 
     line-height:1;
@@ -165,7 +171,7 @@ header{
     border-collapse:collapse;
     table-layout:fixed;
 }
-
+/* room1 room 2 etc */
 #interviewBoard th{
     background:#8dbfc0;
     color:#21105e;
@@ -174,15 +180,15 @@ header{
     height:60px;
     border:1px solid #21105e;
 }
-/*TABLE */
+/*TABLE interview room */
 #interviewBoard td{
     color:#21105e;
     border:1px solid #21105e;
     text-align:center;
     vertical-align:middle;
-    font-size:40px;
+    font-size:70px;
     font-weight:900;
-    height:200px;
+    height:100px;
     padding:0;
     overflow:hidden;
 }
@@ -227,7 +233,7 @@ header{
     width:100%;
     height:100%;
 
-    font-size:24px;
+    font-size:40px;
     font-weight:900;
     line-height:1.05;
 
