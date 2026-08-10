@@ -132,13 +132,21 @@ header{
 
 .section-title{
     background:#21105e;
-    color:#ffffff;
-    text-align:center;
-    font-size:75px;
-    font-weight:900;
+
     height:100px;
-    line-height:100px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:#ffffff;
+
+    font-size:80px;
+    font-weight:900;
+
+    line-height:1;
     letter-spacing:2px;
+    text-align:center;
 }
 
 /* INTERVIEW TABLE */
@@ -251,10 +259,21 @@ header{
     display:none;
 }
 
+.applicant-call{
+    font-size:200px;
+    font-weight:900;
+    line-height:1;
+    text-align:center;
+    color:#21105e;
+    margin:10px 0;
+}
 .seat-call{
     font-size:200px;
     font-weight:900;
     line-height:1;
+    text-align:center;
+    display:block;
+    width:100%;
 }
 
 .instruction{
