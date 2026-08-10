@@ -22,7 +22,7 @@ body{
 /* testing room  header */
 header{
     background:#21105e;
-    height:123px;
+    height:124px;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -140,7 +140,8 @@ header{
 
 .section-title{
     background:#21105e;
-    height:123px;
+
+    height:124px;
 
     display:flex;
     justify-content:center;
