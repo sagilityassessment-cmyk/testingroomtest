@@ -229,20 +229,17 @@ setInterval(async () => {
 
     let announceText = "";
 
-    if (isInterview) {
+if (isInterview) {
 
-        interviewRooms[item.room] = item.value;
-        drawInterviewRooms();
+    popup.innerHTML = `
+        <div class="seat-call">
+            ROOM ${item.room} - ${item.value}
+        </div>
 
-        popup.innerHTML = `
-            <div class="seat-call">
-                ${item.value}
-            </div>
-
-            <div class="instruction">
-                PLEASE PROCEED TO INTERVIEW ROOM ${item.room}
-            </div>
-        `;
+        <div class="instruction">
+            PLEASE PROCEED TO INTERVIEW ROOM
+        </div>
+    `;
 
         if (isNaN(item.value)) {
 
