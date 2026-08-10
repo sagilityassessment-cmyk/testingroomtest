@@ -233,7 +233,11 @@ if (isInterview) {
 
     popup.innerHTML = `
         <div class="seat-call">
-            ROOM ${item.room} - ${item.value}
+            ROOM ${item.room}
+        </div>
+
+        <div class="applicant-call">
+            ${item.value}
         </div>
 
         <div class="instruction">
@@ -241,38 +245,42 @@ if (isInterview) {
         </div>
     `;
 
-        if (isNaN(item.value)) {
+    if (isNaN(item.value)) {
 
-            announceText =
-                `Applicant name ${item.value}. Please proceed to Interview Room ${item.room}.`;
-
-        } else {
-
-            announceText =
-                `Applicant ID ${item.value}. Please proceed to Interview Room ${item.room}.`;
-        }
+        announceText =
+            `Applicant ${item.value}. Room ${item.room}. Please proceed for your Interview.`;
 
     } else {
 
-        popup.innerHTML = `
-            <div class="seat-call">
-                SEAT ${item.seat} - ID ${item.id}
-            </div>
+        announceText =
+            `Applicant ID ${item.value}. Room ${item.room}. Please proceed for your Interview.`;
+    }
 
-            <div class="instruction">
-                PLEASE PROCEED TO TESTING ROOM
-            </div>
-        `;
+} else {
+
+popup.innerHTML = `
+    <div class="seat-call">
+        SEAT ${item.seat}
+    </div>
+
+    <div class="applicant-call">
+        ${item.id}
+    </div>
+
+    <div class="instruction">
+        PLEASE PROCEED TO TESTING ROOM
+    </div>
+`;
 
         if (isNaN(item.id)) {
 
             announceText =
-                `Seat number ${item.seat}. Applicant ${item.id}. Please proceed to Testing Room.`;
+                `Applicant ${item.id}.Seat number ${item.seat}. Please proceed to Testing Room.`;
 
         } else {
 
             announceText =
-                `Seat number ${item.seat}. ID number ${item.id}. Please proceed to Testing Room.`;
+                `Applicant ID ${item.id}. Seat number ${item.seat}. Please proceed to Testing Room.`;
         }
     }
 
