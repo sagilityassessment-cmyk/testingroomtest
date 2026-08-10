@@ -326,7 +326,7 @@ popup.innerHTML = `
         if (isNaN(item.id)) {
 
             announceText =
-                `Applicant ${item.id}.Seat number ${item.seat}. Please proceed to Testing Room.`;
+                `Applicant ${item.id}. Seat number ${item.seat}. Please proceed to Testing Room.`;
 
         } else {
 
