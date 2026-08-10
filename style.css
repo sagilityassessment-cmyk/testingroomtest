@@ -37,7 +37,7 @@ header{
     line-height:1;
     text-align:center;
 }
-
+/* ASSESSMENT SEAT ID MANAGER */
 .admin-page .title{
     font-size:70px;
 }
@@ -61,13 +61,18 @@ header{
     border-radius:12px;
     padding:16px;
 }
-
+/* SEAT */
 .card h3{
     font-size:30px;
     color:#21105e;
+    text-transform:uppercase;
+    text-align:center;
+    margin:0 0 15px 0;
+    font-weight:900;
 }
 
 .card input{
+    text-align:center;
     width:100%;
     box-sizing:border-box;
     font-size:32px;
