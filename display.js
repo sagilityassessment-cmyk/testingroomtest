@@ -8,6 +8,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
 
 const board = document.getElementById("board");
+const interviewBoard = document.getElementById("interviewBoard");
 const popup = document.getElementById("popup");
 
 const chime = new Audio("./chime.mp3");
@@ -18,7 +19,16 @@ let interviewQueue = [];
 let processing = false;
 let chimePlayed = false;
 
+let interviewRooms = {
+    1: "",
+    2: "",
+    3: "",
+    4: "",
+    5: ""
+};
+
 /* FEMALE VOICE */
+
 function loadFemaleVoice() {
 
     const voices = speechSynthesis.getVoices();
@@ -35,6 +45,8 @@ function loadFemaleVoice() {
 
 loadFemaleVoice();
 speechSynthesis.onvoiceschanged = loadFemaleVoice;
+
+/* TESTING ROOM TABLE */
 
 function draw(seats = []) {
 
@@ -61,15 +73,22 @@ function draw(seats = []) {
                 ? "pink"
                 : "green";
 
-            html += `
-                <td class="${color}">
-                    SEAT ${seat}
-                </td>
+html += `
+    <td class="${color}">
+        SEAT ${seat}
+    </td>
 
-                <td class="${color}">
-                    ${seats[seat] || 0}
-                </td>
-            `;
+    <td class="${color}">
+        <span class="${
+            seats[seat] &&
+            isNaN(seats[seat])
+                ? "name-value"
+                : "id-value"
+        }">
+            ${seats[seat] || 0}
+        </span>
+    </td>
+`;
         }
 
         html += "</tr>";
@@ -80,29 +99,56 @@ function draw(seats = []) {
     board.innerHTML = html;
 }
 
+/* INTERVIEW ROOM TABLE */
+
+function drawInterviewRooms() {
+
+    let html = `
+    <table>
+        <tr>
+            <th>ROOM 1</th>
+            <th>ROOM 2</th>
+            <th>ROOM 3</th>
+            <th>ROOM 4</th>
+            <th>ROOM 5</th>
+        </tr>
+
+        <tr>
+            <td class="pink">${interviewRooms[1] || ""}</td>
+            <td class="green">${interviewRooms[2] || ""}</td>
+            <td class="pink">${interviewRooms[3] || ""}</td>
+            <td class="green">${interviewRooms[4] || ""}</td>
+            <td class="pink">${interviewRooms[5] || ""}</td>
+        </tr>
+    </table>
+    `;
+
+    interviewBoard.innerHTML = html;
+}
+
+drawInterviewRooms();
+
 /* SEATS */
+
 onValue(
     ref(db, `locations/${SITE}/seats`),
     snapshot => {
 
-        const seats =
-            snapshot.val() || [];
+        const seats = snapshot.val() || [];
 
         draw(seats);
-
     }
 );
 
 /* TESTING QUEUE */
+
 onValue(
     ref(db, `locations/${SITE}/queue`),
     snapshot => {
 
-        const data =
-            snapshot.val() || {};
+        const data = snapshot.val() || {};
 
-        queue =
-            Object.entries(data);
+        queue = Object.entries(data);
 
         if (
             queue.length === 0 &&
@@ -110,20 +156,18 @@ onValue(
         ) {
             chimePlayed = false;
         }
-
     }
 );
 
 /* INTERVIEW QUEUE */
+
 onValue(
     ref(db, `locations/${SITE}/interviewQueue`),
     snapshot => {
 
-        const data =
-            snapshot.val() || {};
+        const data = snapshot.val() || {};
 
-        interviewQueue =
-            Object.entries(data);
+        interviewQueue = Object.entries(data);
 
         if (
             queue.length === 0 &&
@@ -131,9 +175,29 @@ onValue(
         ) {
             chimePlayed = false;
         }
+    }
+);
+/* INTERVIEW ROOMS REALTIME */
+
+onValue(
+    ref(db, `locations/${SITE}/interviewRooms`),
+    snapshot => {
+
+        const data = snapshot.val() || {};
+
+        interviewRooms = {
+            1: data[1] || "",
+            2: data[2] || "",
+            3: data[3] || "",
+            4: data[4] || "",
+            5: data[5] || ""
+        };
+
+        drawInterviewRooms();
 
     }
 );
+/* PROCESS QUEUE */
 
 setInterval(async () => {
 
@@ -152,13 +216,11 @@ setInterval(async () => {
 
     if (queue.length > 0) {
 
-        [key, item] =
-            queue[0];
+        [key, item] = queue[0];
 
     } else {
 
-        [key, item] =
-            interviewQueue[0];
+        [key, item] = interviewQueue[0];
 
         isInterview = true;
     }
@@ -168,6 +230,9 @@ setInterval(async () => {
     let announceText = "";
 
     if (isInterview) {
+
+        interviewRooms[item.room] = item.value;
+        drawInterviewRooms();
 
         popup.innerHTML = `
             <div class="seat-call">
@@ -188,7 +253,6 @@ setInterval(async () => {
 
             announceText =
                 `Applicant ID ${item.value}. Please proceed to Interview Room ${item.room}.`;
-
         }
 
     } else {
@@ -212,7 +276,6 @@ setInterval(async () => {
 
             announceText =
                 `Seat number ${item.seat}. ID number ${item.id}. Please proceed to Testing Room.`;
-
         }
     }
 
@@ -255,10 +318,7 @@ setInterval(async () => {
 
     } catch (err) {
 
-        console.log(
-            "Chime failed:",
-            err
-        );
+        console.log("Chime failed:", err);
 
         speak();
     }
