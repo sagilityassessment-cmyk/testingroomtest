@@ -1,0 +1,264 @@
+html,
+body{
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+/* ADMIN PAGE */
+
+.admin-page{
+    background:#ececec;
+    min-height:100vh;
+    overflow-y:auto;
+}
+
+/* DISPLAY PAGE */
+
+.display-page{
+    background:#ececec;
+    color:#21105e;
+}
+
+/* HEADER */
+
+header{
+    background:#21105e;
+    height:100px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.title{
+    font-weight:900;
+    color:#ffffff;
+    letter-spacing:2px;
+    line-height:1;
+    text-align:center;
+}
+
+.admin-page .title{
+    font-size:70px;
+}
+
+.display-page .title{
+    font-size:80px;
+}
+
+/* GRID */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:24px;
+    padding:24px;
+}
+
+.card{
+    background:#f1f1f1;
+    border:3px solid #21105e;
+    border-radius:12px;
+    padding:16px;
+}
+
+.card h3{
+    font-size:30px;
+    color:#21105e;
+}
+
+.card input{
+    width:100%;
+    box-sizing:border-box;
+    font-size:32px;
+    padding:12px;
+}
+
+.card button{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    font-size:28px;
+    font-weight:900;
+}
+
+.called{
+    background:#2daa43 !important;
+    color:#ffffff !important;
+}
+
+/* TESTING ROOM TABLE */
+
+.board{
+    width:100%;
+}
+
+.board table{
+    width:100%;
+    border-collapse:collapse;
+    table-layout:fixed;
+}
+
+.board th{
+    background:#8dbfc0;
+    color:#21105e;
+    font-size:40px;
+    font-weight:900;
+    height:60px;
+    border:1px solid #21105e;
+}
+
+.board td{
+    color:#21105e;
+    border:1px solid #21105e;
+    text-align:center;
+    vertical-align:middle;
+    font-size:50px;
+    font-weight:900;
+    height:155px;
+    padding:0;
+    overflow:hidden;
+}
+
+.pink{
+    background:#edf5ff;
+}
+
+.green{
+    background:#f2fff7;
+}
+
+/* INTERVIEW HEADER */
+
+.section-title{
+    background:#21105e;
+    color:#ffffff;
+    text-align:center;
+    font-size:75px;
+    font-weight:900;
+    height:100px;
+    line-height:100px;
+    letter-spacing:2px;
+}
+
+/* INTERVIEW TABLE */
+
+#interviewBoard{
+    width:100%;
+}
+
+#interviewBoard table{
+    width:100%;
+    border-collapse:collapse;
+    table-layout:fixed;
+}
+
+#interviewBoard th{
+    background:#8dbfc0;
+    color:#21105e;
+    font-size:40px;
+    font-weight:900;
+    height:60px;
+    border:1px solid #21105e;
+}
+
+#interviewBoard td{
+    color:#21105e;
+    border:1px solid #21105e;
+    text-align:center;
+    vertical-align:middle;
+    font-size:40px;
+    font-weight:900;
+    height:90px;
+    padding:0;
+    overflow:hidden;
+}
+
+/* ID VALUES */
+
+.id-value{
+    font:inherit;
+}
+
+/* NAME VALUES - TESTING ROOM */
+
+.name-value{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    width:100%;
+    height:100%;
+
+    font-size:40px;
+    font-weight:900;
+    line-height:1.05;
+
+    padding:4px;
+    box-sizing:border-box;
+
+    text-align:center;
+
+    white-space:normal;
+    word-break:break-word;
+    overflow-wrap:anywhere;
+}
+
+/* NAME VALUES - INTERVIEW ROOM */
+
+#interviewBoard .name-value{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    width:100%;
+    height:100%;
+
+    font-size:24px;
+    font-weight:900;
+    line-height:1.05;
+
+    padding:4px;
+    box-sizing:border-box;
+
+    text-align:center;
+
+    white-space:normal;
+    word-break:break-word;
+    overflow-wrap:anywhere;
+}
+
+#interviewBoard .id-value{
+    font:inherit;
+}
+
+/* POPUP */
+
+.popup{
+    position:fixed;
+    inset:0;
+    background:#ececec;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    color:#21105e;
+    z-index:9999;
+}
+
+.hidden{
+    display:none;
+}
+
+.seat-call{
+    font-size:220px;
+    font-weight:900;
+    line-height:1;
+}
+
+.instruction{
+    font-size:90px;
+    font-weight:900;
+    margin-top:20px;
+}
