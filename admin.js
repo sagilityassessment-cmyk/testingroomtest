@@ -49,47 +49,49 @@ async function loadSeats() {
         `;
     }
 
-if (interviewGrid) {
+    if (interviewGrid) {
 
-    interviewGrid.innerHTML = "";
+        interviewGrid.innerHTML = "";
 
-    const roomsSnapshot = await get(
-        ref(
-            db,
-            `locations/${SITE}/interviewRooms`
-        )
-    );
+        const roomsSnapshot = await get(
+            ref(
+                db,
+                `locations/${SITE}/interviewRooms`
+            )
+        );
 
-    const rooms = roomsSnapshot.exists()
-        ? roomsSnapshot.val()
-        : {};
+        const rooms =
+            roomsSnapshot.exists()
+                ? roomsSnapshot.val()
+                : {};
 
-    for (let i = 1; i <= 5; i++) {
+        for (let i = 1; i <= 5; i++) {
 
-        const roomValue = rooms[i] || "";
+            const roomValue = rooms[i] || "";
 
-        interviewGrid.innerHTML += `
-        <div class="card">
-            <h3>Interview Room ${i}</h3>
+            interviewGrid.innerHTML += `
+            <div class="card">
+                <h3>Interview Room ${i}</h3>
 
-            <input
-                id="interviewName${i}"
-                value="${roomValue}"
-                placeholder="Applicant ID or Name"
-                onchange="saveInterview(${i}, this.value)"
-            >
+                <input
+                    id="interviewName${i}"
+                    value="${roomValue}"
+                    placeholder="Applicant ID or Name"
+                    onchange="saveInterview(${i}, this.value)"
+                >
 
-            <button
-                id="ib${i}"
-                onclick="callInterview(${i})"
-            >
-                CALL INTERVIEW
-            </button>
-        </div>
-        `;
+                <button
+                    id="ib${i}"
+                    onclick="callInterview(${i})"
+                >
+                    CALL INTERVIEW
+                </button>
+            </div>
+            `;
+        }
     }
 }
-}
+
 window.saveSeat = async function(seat, value){
 
     await set(
@@ -135,8 +137,8 @@ window.callSeat = async function(seat){
             `locations/${SITE}/queue`
         ),
         {
-            seat: seat,
-            id: id,
+            seat,
+            id,
             timestamp: Date.now()
         }
     );
@@ -147,6 +149,13 @@ window.callSeat = async function(seat){
 
     btn.className = "called";
     btn.innerHTML = "CALLED ✓";
+
+    setTimeout(() => {
+
+        btn.className = "";
+        btn.innerHTML = "CALL";
+
+    }, 10000);
 };
 
 window.callInterview = async function(room){
@@ -176,17 +185,22 @@ window.callInterview = async function(room){
 
     btn.className = "called";
     btn.innerHTML = "CALLED ✓";
+
+    setTimeout(() => {
+
+        btn.className = "";
+        btn.innerHTML = "CALL INTERVIEW";
+
+    }, 10000);
 };
 
-window.clearAllSeats = async function () {
+window.clearAllSeats = async function(){
 
     const confirmClear = confirm(
         "Are you sure you want to clear all seat data?"
     );
 
     if (!confirmClear) return;
-
-    /* CLEAR TESTING ROOM */
 
     for (let i = 1; i <= 20; i++) {
 
@@ -199,8 +213,6 @@ window.clearAllSeats = async function () {
         );
     }
 
-    /* CLEAR INTERVIEW ROOMS */
-
     for (let i = 1; i <= 5; i++) {
 
         await set(
@@ -212,7 +224,9 @@ window.clearAllSeats = async function () {
         );
     }
 
-    alert("Testing Room and Interview Room have been cleared.");
+    alert(
+        "Testing Room and Interview Room have been cleared."
+    );
 
     loadSeats();
 };
