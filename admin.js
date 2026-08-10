@@ -62,6 +62,7 @@ async function loadSeats() {
                 <input
                     id="interviewName${i}"
                     placeholder="Applicant ID or Name"
+                    onchange="saveInterview(${i}, this.value)"
                 >
 
                 <button
@@ -84,6 +85,18 @@ window.saveSeat = async function(seat, value){
             `locations/${SITE}/seats/${seat}`
         ),
         value || 0
+    );
+
+};
+
+window.saveInterview = async function(room, value){
+
+    await set(
+        ref(
+            db,
+            `locations/${SITE}/interviewRooms/${room}`
+        ),
+        value || ""
     );
 
 };
@@ -155,9 +168,9 @@ window.clearAllSeats = async function () {
         "Are you sure you want to clear all seat data?"
     );
 
-    if (!confirmClear) {
-        return;
-    }
+    if (!confirmClear) return;
+
+    /* CLEAR TESTING ROOM */
 
     for (let i = 1; i <= 20; i++) {
 
@@ -168,10 +181,22 @@ window.clearAllSeats = async function () {
             ),
             0
         );
-
     }
 
-    alert("All seats have been reset to 0.");
+    /* CLEAR INTERVIEW ROOMS */
+
+    for (let i = 1; i <= 5; i++) {
+
+        await set(
+            ref(
+                db,
+                `locations/${SITE}/interviewRooms/${i}`
+            ),
+            ""
+        );
+    }
+
+    alert("Testing Room and Interview Room have been cleared.");
 
     loadSeats();
 };
