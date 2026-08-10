@@ -49,34 +49,47 @@ async function loadSeats() {
         `;
     }
 
-    if (interviewGrid) {
+if (interviewGrid) {
 
-        interviewGrid.innerHTML = "";
+    interviewGrid.innerHTML = "";
 
-        for (let i = 1; i <= 5; i++) {
+    const roomsSnapshot = await get(
+        ref(
+            db,
+            `locations/${SITE}/interviewRooms`
+        )
+    );
 
-            interviewGrid.innerHTML += `
-            <div class="card">
-                <h3>Interview Room ${i}</h3>
+    const rooms = roomsSnapshot.exists()
+        ? roomsSnapshot.val()
+        : {};
 
-                <input
-                    id="interviewName${i}"
-                    placeholder="Applicant ID or Name"
-                    onchange="saveInterview(${i}, this.value)"
-                >
+    for (let i = 1; i <= 5; i++) {
 
-                <button
-                    id="ib${i}"
-                    onclick="callInterview(${i})"
-                >
-                    CALL INTERVIEW
-                </button>
-            </div>
-            `;
-        }
+        const roomValue = rooms[i] || "";
+
+        interviewGrid.innerHTML += `
+        <div class="card">
+            <h3>Interview Room ${i}</h3>
+
+            <input
+                id="interviewName${i}"
+                value="${roomValue}"
+                placeholder="Applicant ID or Name"
+                onchange="saveInterview(${i}, this.value)"
+            >
+
+            <button
+                id="ib${i}"
+                onclick="callInterview(${i})"
+            >
+                CALL INTERVIEW
+            </button>
+        </div>
+        `;
     }
 }
-
+}
 window.saveSeat = async function(seat, value){
 
     await set(
@@ -157,9 +170,12 @@ window.callInterview = async function(room){
         }
     );
 
-    document.getElementById(
+    const btn = document.getElementById(
         `ib${room}`
-    ).innerHTML = "CALLED ✓";
+    );
+
+    btn.className = "called";
+    btn.innerHTML = "CALLED ✓";
 };
 
 window.clearAllSeats = async function () {
