@@ -33,11 +33,10 @@ async function loadSeats() {
         <div class="card">
             <h3>Seat ${i}</h3>
 
-            <input
-                id="seat${i}"
-                value="${v}"
-                onchange="saveSeat(${i}, this.value)"
-            >
+<textarea
+    id="seat${i}"
+    onchange="saveSeat(${i}, this.value)"
+>${v}</textarea>
 
             <button
                 id="b${i}"
@@ -73,12 +72,11 @@ async function loadSeats() {
             <div class="card">
                 <h3>Interview Room ${i}</h3>
 
-                <input
-                    id="interviewName${i}"
-                    value="${roomValue}"
-                    placeholder="Applicant ID or Name"
-                    onchange="saveInterview(${i}, this.value)"
-                >
+<textarea
+    id="interviewName${i}"
+    placeholder="Applicant ID or Name"
+    onchange="saveInterview(${i}, this.value)"
+>${roomValue}</textarea>
 
                 <button
                     id="ib${i}"

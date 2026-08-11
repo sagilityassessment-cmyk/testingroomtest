@@ -22,14 +22,14 @@ body{
 /* testing room  header */
 header{
     background:#21105e;
-    height:124px;
+    height:50px;
     display:flex;
     justify-content:center;
     align-items:center;
 }
 /* testing room HEADER */
 .display-page .title{
-    font-size:105px !important;
+    font-size:50px !important;
     font-weight:900;
     color:#ffffff;
     letter-spacing:2px;
@@ -45,7 +45,7 @@ header{
 }
 /* ASSESSMENT SEAT ID MANAGER */
 .admin-page .title{
-    font-size:70px;
+    font-size:50px;
 }
 
 
@@ -54,40 +54,57 @@ header{
 .grid{
     display:grid;
     grid-template-columns:repeat(5,1fr);
-    gap:24px;
-    padding:24px;
+    gap:15px;
+    padding:15px;
 }
 
 .card{
     background:#f1f1f1;
     border:3px solid #21105e;
     border-radius:12px;
-    padding:16px;
+    padding:12px;
 }
 /* SEAT */
 .card h3{
-    font-size:30px;
+    font-size:20px;
     color:#21105e;
     text-transform:uppercase;
     text-align:center;
-    margin:0 0 15px 0;
+    margin:0 0 10px 0;
     font-weight:900;
 }
 
-.card input{
-    text-align:center;
+.card textarea{
     width:100%;
     box-sizing:border-box;
-    font-size:32px;
-    padding:12px;
+
+    text-align:center;
+
+    font-size:22px;
+    font-family:Arial,sans-serif;
+    font-weight:700;
+
+    height:80px;
+
+    padding:15px 10px;
+
+    resize:none;
+    overflow:hidden;
+
+    white-space:normal;
+    word-break:break-word;
+    overflow-wrap:anywhere;
+
+    line-height:1.2;
 }
 
 .card button{
     width:100%;
-    padding:12px;
-    margin-top:10px;
-    font-size:28px;
+    padding:8px;
+    margin-top:8px;
+    font-size:15px;
     font-weight:900;
+    height:40px;
 }
 
 .called{
@@ -110,20 +127,20 @@ header{
 .board th{
     background:#8dbfc0;
     color:#21105e;
-    font-size:40px;
+    font-size:35px;
     font-weight:900;
     height:60px;
     border:1px solid #21105e;
 }
-/* TABLE testing */
+/* TABLE testing seat size word*/
 .board td{
     color:#21105e;
     border:1px solid #21105e;
     text-align:center;
     vertical-align:middle;
-    font-size:70px;
+    font-size:32px;
     font-weight:900;
-    height:190px;
+    height:91px;
     padding:0;
     overflow:hidden;
 }
@@ -141,7 +158,7 @@ header{
 .section-title{
     background:#21105e;
 
-    height:125px;
+    height:50px;
 
     display:flex;
     justify-content:center;
@@ -149,7 +166,7 @@ header{
 
     color:#ffffff;
 
-    font-size:105px;
+    font-size:45px;
     font-weight:900;
 
     line-height:1;
@@ -172,9 +189,9 @@ header{
 #interviewBoard th{
     background:#8dbfc0;
     color:#21105e;
-    font-size:40px;
+    font-size:30px;
     font-weight:900;
-    height:60px;
+    height:30px;
     border:1px solid #21105e;
 }
 /*TABLE interview room */
@@ -183,9 +200,9 @@ header{
     border:1px solid #21105e;
     text-align:center;
     vertical-align:middle;
-    font-size:70px;
+    font-size:30px;
     font-weight:900;
-    height:100px;
+    height:10px;
     padding:0;
     overflow:hidden;
 }
@@ -206,7 +223,7 @@ header{
     width:100%;
     height:100%;
 
-    font-size:40px;
+    font-size:20px;
     font-weight:900;
     line-height:1.05;
 
@@ -230,7 +247,7 @@ header{
     width:100%;
     height:100%;
 
-    font-size:40px;
+    font-size:20px;
     font-weight:900;
     line-height:1.05;
 
