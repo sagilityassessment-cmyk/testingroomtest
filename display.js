@@ -282,19 +282,23 @@ setInterval(async () => {
 
 if (isInterview) {
 
-    popup.innerHTML = `
-        <div class="seat-call">
-            ROOM ${item.room}
-        </div>
+popup.innerHTML = `
+    <div class="seat-call">
+        SEAT ${item.seat}
+    </div>
 
-        <div class="applicant-call">
-            ${item.value}
-        </div>
+    <div class="${
+        isNaN(item.id)
+            ? 'applicant-call-name'
+            : 'applicant-call-id'
+    }">
+        ${item.id}
+    </div>
 
-        <div class="instruction">
-            PLEASE PROCEED TO INTERVIEW ROOM
-        </div>
-    `;
+    <div class="instruction">
+        PLEASE PROCEED TO TESTING ROOM
+    </div>
+`;
 
     if (isNaN(item.value)) {
 
@@ -314,9 +318,13 @@ popup.innerHTML = `
         SEAT ${item.seat}
     </div>
 
-    <div class="applicant-call">
-        ${item.id}
-    </div>
+<div class="${
+    isNaN(item.id)
+        ? 'applicant-call-name'
+        : 'applicant-call-id'
+}">
+    ${item.id}
+</div>
 
     <div class="instruction">
         PLEASE PROCEED TO TESTING ROOM
