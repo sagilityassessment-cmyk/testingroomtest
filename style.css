@@ -19,23 +19,29 @@ body{
     background:#ececec;
     color:#21105e;
 }
-/* testing room  header */
-header{
+
+/* ADMIN PAGE HEADER */
+
+.admin-page header{
     background:#21105e;
-    height:46px;
+    height:80px;
     display:flex;
     justify-content:center;
     align-items:center;
 }
-/* testing room HEADER */
-.display-page .title{
-    font-size:50px !important;
-    font-weight:900;
-    color:#ffffff;
-    letter-spacing:2px;
-    line-height:1;
-    text-align:center;
+
+/* DISPLAY PAGE HEADER */
+
+.display-page header{
+    background:#21105e;
+    height:50px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
+
+/* SHARED TITLE STYLE */
+
 .title{
     font-weight:900;
     color:#ffffff;
@@ -43,9 +49,17 @@ header{
     line-height:1;
     text-align:center;
 }
+
 /* ASSESSMENT SEAT ID MANAGER */
+
 .admin-page .title{
-    font-size:50px;
+    font-size:60px;
+}
+
+/* TESTING ROOM */
+
+.display-page .title{
+    font-size:50px !important;
 }
 
 
@@ -54,8 +68,8 @@ header{
 .grid{
     display:grid;
     grid-template-columns:repeat(5,1fr);
-    gap:15px;
-    padding:15px;
+    gap:30px;
+    padding:30px;
 }
 
 .card{
@@ -66,7 +80,7 @@ header{
 }
 /* SEAT */
 .card h3{
-    font-size:20px;
+    font-size:25px;
     color:#21105e;
     text-transform:uppercase;
     text-align:center;
@@ -307,7 +321,7 @@ header{
     margin-top:20px;
 }
 .applicant-call-id{
-    font-size:150px;
+    font-size:180px;
     font-weight:900;
     line-height:1;
     text-align:center;
